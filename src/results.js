@@ -16,7 +16,7 @@ function Results() {
             {/* 票價 */}
             {trainData[0]['Fares'].map((item, index) => {
               const { TicketType, Price } = item
-              console.log(TicketType, Price)
+              // console.log(TicketType, Price)
               return (
                 <div key={index}>
                   <h3>

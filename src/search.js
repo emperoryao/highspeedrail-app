@@ -1,28 +1,28 @@
 import React from 'react'
-import { useState, useEffect } from 'react'
-import ReactDOM from 'react-dom'
-import Loading from './Loading'
 import OriginStationID from './station'
-import { AppContext, useGlobalContext } from './context'
+import { useGlobalContext } from './context'
 
 function Search() {
-  const {
-    handleClick,
-    startStation,
-    endStation,
-    setStartStation,
-    setEndStation,
-  } = useGlobalContext()
+  const { startStation, setStartStation, setEndStation, setIsSending } =
+    useGlobalContext()
+
+    const handleRequest = ()=>{
+      setIsSending(true)
+    }
+
   return (
     <>
       <div>
         乘車起點:
         <select
-          id='start'
-          onChange={() =>
-            setStartStation(document.getElementById('start').value)  /* 設startStation!! */
-          }
+          defaultValue={'DEFAULT'}
+          onChange={(e) =>
+            setStartStation(e.target.value)
+          } /*設startStation!!  */
         >
+          <option value='DEFAULT' disabled>
+            請選擇
+          </option>
           {OriginStationID.map((start) => {
             const { station, id } = start
             return (
@@ -35,26 +35,25 @@ function Search() {
       </div>
       <div>
         乘車終點:
-        <select id='end'>
+        <select defaultValue={'DEFAULT'} onChange={(e) => setEndStation(e.target.value)}>
+          <option value='DEFAULT' disabled>
+            請選擇
+          </option>
           {OriginStationID.map((end) => {
             const { station, id } = end
-            if (id === startStation) {
-              return (
-                <option key={id} value={id} disabled>
-                  {station}
-                </option>
-              )
-            }
             return (
-              <option key={id} value={id}>
+              <option
+                key={id}
+                value={id}
+                disabled={id === startStation ? true : false}
+              >
                 {station}
               </option>
             )
           })}
         </select>
       </div>
-      <button onClick={handleClick}>查詢</button>
-      <article></article>
+      <button type='button' onClick={handleRequest}>查詢</button>
     </>
   )
 }
